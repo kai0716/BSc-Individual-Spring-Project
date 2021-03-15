@@ -1,0 +1,102 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.6.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+jar {
+	baseName = 'boot-gradle'
+	version = '0.0.1-SNAPSHOT'
+}
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+task wrapper(type: Wrapper) {
+	gradleVersion = '4.1'
+}
+
+
+eclipse {
+	project {
+	  buildCommand 'org.eclipse.jdt.core.javabuilder'
+	  buildCommand 'org.eclipse.buildship.core.gradleprojectbuilder'
+	  buildCommand 'org.springframework.ide.eclipse.core.springbuilder'
+	  buildCommand 'org.eclipse.wst.common.project.facet.core.builder'
+	  natures 'org.eclipse.jdt.core.javanature',
+	    'org.eclipse.jdt.groovy.core.groovyNature',
+	  	'org.eclipse.buildship.core.gradleprojectnature', 
+		'org.springframework.ide.eclipse.core.springnature', 
+		'org.eclipse.wst.common.project.facet.core.nature'
+	}
+}
+
+
+// tag::versions[]
+ext {
+	jasperVersion = '9.0.0.M26'
+	lombokVersion = '1.16.18'
+	groovyVersion = '2.4.4'
+	gebVersion = '0.10.0'
+	spockVersion = '1.1-groovy-2.4'
+}
+// end::versions[]
+
+dependencies {
+	// Spring Boot
+	compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}") 
+	compile("org.springframework.boot:spring-boot-devtools")
+	// JSP
+	compile("org.apache.tomcat.embed:tomcat-embed-jasper:$jasperVersion")
+	compile("javax.servlet:jstl:1.2")
+	// Lombok
+//	compile("org.projectlombok:lombok:$lombokVersion")
+	// Bootstrap 
+	compile("org.webjars:bootstrap:3.3.7")
+	// persistence
+	compile("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
+	runtime("mysql:mysql-connector-java")
+	//Random genator
+	compile group: 'org.passay', name: 'passay', version: '1.1.0'
+	// security
+	compile("org.springframework.boot:spring-boot-starter-security:${springBootVersion}")
+	compile("org.springframework.security:spring-security-taglibs:4.2.3.RELEASE")
+	
+	// https://mvnrepository.com/artifact/org.apache.poi/poi
+	compile group: 'org.apache.poi', name: 'poi', version: '3.15'
+	compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.15'
+	
+	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '1.2.0.RELEASE'
+	
+	// Spring
+	testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
+	
+	// Groovy
+	testCompile("org.codehaus.groovy:groovy-all:$groovyVersion")
+
+	// Spock
+	testCompile("junit:junit:4.12")
+	testCompile("org.spockframework:spock-core:$spockVersion")
+	testCompile "org.spockframework:spock-spring:$spockVersion"
+	testCompile("org.hamcrest:hamcrest-core:1.3")
+	testCompile("org.hamcrest:hamcrest-library:1.3")
+
+	// Spock-reports
+	testCompile( 'com.athaydes:spock-reports:1.3.1' ) {
+		transitive = false // this avoids affecting your version of Groovy/Spock
+	}
+}
